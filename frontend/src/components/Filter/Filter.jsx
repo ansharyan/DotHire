@@ -6,7 +6,7 @@ export default function Filter() {
 
   return (
     <div
-     className="m-4 flex flex-col md:border-2 mx-auto w-full md:w-4/5 p-4 rounded-sm  mt-15">
+     className="m-4 flex flex-col md:border-2 mx-auto w-full md:w-4/5 p-4 rounded-sm  mt-15 max-h-fit">
 
       <div className="md:block hidden">
         <h1 className="text-neutral font-bold">Filter Jobs</h1>

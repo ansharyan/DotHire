@@ -3,6 +3,10 @@ import Navbar from "./components/Navbar"
 import HomePage from "./pages/HomePage.jsx"
 import JobsPage from "./pages/JobsPage.jsx"
 import UserProfile from "./pages/UserProfile.jsx"
+import EditProfile from "./pages/EditProfile.jsx"
+import LoginPage from "./pages/Authentication/LoginPage.jsx"
+import SignUpPage from "./pages/Authentication/SignUpPage.jsx"
+import CreateJob from "./pages/Jobs/CreateJob.jsx"
 
 function App() {
 
@@ -11,8 +15,12 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path="/" element={<HomePage/>} />
+        <Route path="/login" element={<LoginPage/>} />
+        <Route path="/signup" element={<SignUpPage/>} />
         <Route path="/jobs" element={<JobsPage/>} />
         <Route path="/profile" element={<UserProfile/>}/>
+        <Route path="/edit-profile" element={<EditProfile/>}/>
+        <Route path="/create-job" element={<CreateJob/>}/>
       </Routes>
     </div>
   )

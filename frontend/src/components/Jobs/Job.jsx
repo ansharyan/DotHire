@@ -46,7 +46,10 @@ export default function Job( job ) {
                 ))}
               </ul>
             </ul>
-            <div className="btn btn-ghost btn-accent font-bold -ml-4 mt-3">Apply</div>
+            <div className="flex justify-between items-center mt-4">
+              <div className="btn btn-ghost btn-accent font-bold -ml-4">Apply</div>
+              <div className={`badge badge-neutral`}>Not Applied</div>
+            </div>
           </div>     
         </div>
 

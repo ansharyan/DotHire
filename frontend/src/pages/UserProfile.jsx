@@ -4,6 +4,7 @@ import { MdOutlinePhone } from "react-icons/md";
 import { Link } from "react-router-dom";
 import { MdAttachment } from "react-icons/md";
 import Jobs from "../components/Jobs/Jobs";
+import Applications from "../components/Application/Applications";
 
 export default function UserProfile() {
   const user = {
@@ -40,7 +41,7 @@ export default function UserProfile() {
               <span>{user?.profile?.bio}</span>
             </div>
           </div>
-          <div className=" cursor-pointer btn btn-primary">Edit</div>
+          <div className=" cursor-pointer btn btn-primary"><Link to={"/edit-profile"}>Edit</Link></div>
         </div>
 
         <div className="flex flex-col mt-3">
@@ -70,7 +71,7 @@ export default function UserProfile() {
       <div className="mt-5 p-6">
             <h2 className="text-accent font-medium text-lg">Applied Jobs</h2>
             <div className="bg-gray-700 h-0.5 rounded-full mt-0.5"></div>
-            <Jobs className=""/>
+            <Applications/>
       </div>
     </div>
   );

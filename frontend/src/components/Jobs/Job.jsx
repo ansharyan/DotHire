@@ -1,11 +1,11 @@
 import React from "react";
 import {Link} from "react-router-dom"
 
-export default function Job( job ) {
-  const role = "employer";
+export default function Job( {job, role} ) {
+  
   return (
     <div className="">
-      <a
+      <div
         href="#"
         className="block rounded-md border border-gray-300 p-4 shadow-sm sm:p-6"
       >
@@ -13,7 +13,7 @@ export default function Job( job ) {
           <div className="sm:order-last sm:shrink-0">
             <img
               alt=""
-              src={job?.company.logo || "https://via.placeholder.com/72"}
+              src={job?.company?.logo || "https://via.placeholder.com/72"}
               className="size-16 rounded-full object-cover sm:size-[72px]"
             />
           </div>
@@ -79,7 +79,7 @@ export default function Job( job ) {
             <dd className="text-xs text-gray-700">{job?.createdAt}</dd>
           </div>
         </dl>
-      </a>
+      </div>
     </div>
   );
 }

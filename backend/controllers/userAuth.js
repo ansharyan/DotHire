@@ -38,12 +38,17 @@ export const signup = async (req, res) =>{
 
 export const login = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        if (!email || !password) {
+        const { email, password, role } = req.body;
+        
+        if (!email || !password || !role) {
             return res.status(400).json({ error: "Please fill all fields" });
         }
 
-        const user = await User.findOne({ email });
+        const user = await User.findOne({ email, role });
+        if(!user){
+            
+            return res.status(400).json({ error: "Invalid Email or User does not exist with this role" });
+        }
         const isPasswordValid = await bcrypt.compare(password, user?.password);
 
         if(!user || !isPasswordValid) {
@@ -54,7 +59,7 @@ export const login = async (req, res) => {
 
         return res.status(200).json({ message: "Login successful", user });
     } catch (error) {
-        res.status(500).json({ message: "Server error", error: error.message });
+        res.status(500).json({ message: "Server error", error: error});
     }
 }
 

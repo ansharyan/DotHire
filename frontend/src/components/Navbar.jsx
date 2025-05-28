@@ -19,25 +19,25 @@ export default function Navbar() {
 
             {/* logo */}
             <div className="flex-1 md:flex md:items-center md:gap-12">
-              <a className="block text-teal-600" href="/">
+              <Link className="block text-teal-600" to="/">
                 <span className="sr-only">Home</span>
                 <Logo className="size-12"
                   viewBox="0 0 28 24"
                   fill="none"/>
-              </a>
+              </Link>
             </div>
 
             <div className="md:flex md:items-center md:gap-12">
               <nav aria-label="Global" className="block">
                 <ul className=" items-center gap-6 text-sm hidden md:flex">
                   <li>
-                    <a
+                    <Link
                       className="text-neutral transition hover:text-neutral/75 hover:underline"
                       href="#"
                     >
                       {" "}
                       About{" "}
-                    </a>
+                    </Link>
                   </li>
 
                   <li>
@@ -51,13 +51,13 @@ export default function Navbar() {
                   </li>
 
                   <li>
-                    <a
+                    <Link
                       className="text-neutral transition hover:text-neutral/75 hover:underline"
-                      href="#"
+                      to="/jobs"
                     >
                       {" "}
                       Jobs{" "}
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </nav>
@@ -83,21 +83,21 @@ export default function Navbar() {
                   role="menu"
                 >
                   <div className="p-2">
-                    <a
-                      href="#"
+                    <Link
+                      to="#"
                       className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                       role="menuitem"
                     >
                       My profile
-                    </a>
+                    </Link>
 
-                    <a
-                      href="#"
+                    <Link
+                      to="#"
                       className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                       role="menuitem"
                     >
                       Applications
-                    </a>
+                    </Link>
                   </div>
 
                   <div className="p-2">

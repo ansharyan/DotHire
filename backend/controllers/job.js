@@ -3,7 +3,7 @@ import  Job  from "../models/job.js";
 
 export const getAllJobs = async (req, res) => {
     try {
-        const jobs = await Job.find();
+        const jobs = await Job.find().populate("company").populate("created_by").sort({createdAt: -1});
         return res.status(200).json({message: "Jobs fetched successfully", jobs});
     } catch (error) {
         return res.status(500).json({message: "Internal Server Error", error: error.message});

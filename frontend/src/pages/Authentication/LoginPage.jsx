@@ -1,6 +1,41 @@
+import { useMutation } from "@tanstack/react-query";
 import React from "react";
+import { Link, Navigate } from "react-router-dom";
 
 export default function LoginPage() {
+  
+  const {mutate, isPending, error, isError}  = useMutation({
+    mutationKey: ["login"],
+    mutationFn: async (formData) => {
+      try {
+        
+        const response = await fetch("/api/user/login", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(formData),
+        });
+        const data = await response.json();
+        console.log(data);
+        if (!response.ok) {
+          throw new Error( data.error || "Login failed. Please try again.");
+        }
+        
+        return data;
+      } catch (error) {
+        console.error("Error logging in:", error);
+        throw error; // Re-throw the error to be handled by React Query
+      }
+    },
+    onSuccess:(data) => {
+      alert("Login successful!");
+      Navigate("/jobs");
+    }
+  });
+
+
+
   const [form, setForm] = React.useState({
     email: "",
     password: "",
@@ -13,7 +48,11 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log("Form submitted:", form);
+    mutate(form);
+    if(isError){
+      console.error("Login failed:", error);
+      alert("Login failed: " + error.message);
+    }
   };
   return (
     <div>
@@ -56,10 +95,14 @@ export default function LoginPage() {
               <option value="" disabled>
                 Select Role
               </option>
-              <option value="user">User</option>
-              <option value="admin">Admin</option>
+              <option value="employer">Employer</option>
+              <option value="employee">Employee</option>
             </select>
+
+            <div className=" items-center w-full flex justify-end gap-1"><p>Do not have an account?</p> <Link to={"/signup"} className="btn btn-ghost btn-neutral  p-2">Sign Up</Link></div>
+
           </div>
+          
         </fieldset>
         <div className="flex justify-center mt-4">
           <button className="btn btn-accent w-full" onClick={handleSubmit}>

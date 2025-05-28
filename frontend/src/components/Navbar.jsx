@@ -1,14 +1,47 @@
 import React from "react";
 import Logo from "./Logo.jsx";
 import { Link } from "react-router-dom";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
 
   const [isOpen, setIsOpen] = React.useState(false);
+  const queryClient = useQueryClient();
 
+  const {mutate:logout,isPending, error, isError} = useMutation({
+    mutationFn: async () => {
+      try {
+        const response = await fetch("/api/user/logout", {
+          method: "POST",
+        });
+        const data = await response.json();
+        if (!response.ok) {
+          throw new Error(data.error || "Something went wrong!");
+        }
+
+        return data;
+
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error; // Re-throw the error to be handled by React Query
+        
+      }
+    },
+    onSuccess: () =>{
+      queryClient.invalidateQueries(["authUser"]);
+    }
+
+  })
   const handleToggle= (e) =>{
     e.preventDefault();
     setIsOpen(!isOpen);
+  }
+
+  const handleLogout = (e) =>{
+    e.preventDefault();
+    if(isPending) return;
+    logout();
+    setIsOpen(false);
   }
 
   return (
@@ -101,11 +134,12 @@ export default function Navbar() {
                   </div>
 
                   <div className="p-2">
-                    <form method="POST" action="#">
+                    
                       <button
                         type="submit"
                         className="flex w-full items-center gap-2 rounded-lg px-4 py-2 text-sm text-red-700 hover:bg-red-50"
                         role="menuitem"
+                        onClick={handleLogout}
                       >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -123,7 +157,7 @@ export default function Navbar() {
                         </svg>
                         Logout
                       </button>
-                    </form>
+                    
                   </div>
                 </div>
               </div>

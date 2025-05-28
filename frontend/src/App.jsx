@@ -42,14 +42,14 @@ function App() {
       <Navbar/>
       <Routes>
         <Route path="/" element={<HomePage/>} />
-        <Route path="/login" element={<LoginPage/>} />
-        <Route path="/signup" element={<SignUpPage/>} />
+        <Route path="/login" element={authUser ? <JobsPage/> : <LoginPage/> } />
+        <Route path="/signup" element={authUser? <JobsPage/> : <SignUpPage/>} />
         <Route path="/jobs" element={authUser ? <JobsPage/> : <LoginPage/>} />
-        <Route path="/profile" element={<UserProfile/>}/>
-        <Route path="/edit-profile" element={<EditProfile/>}/>
-        <Route path="/admin/create-job" element={<CreateJob/>}/>
-        <Route path="/admin/dashboard" element={<RecruiterDashboard/>}/>
-        <Route path="/admin/applicants" element={<Applicants/>}/>
+        <Route path="/profile" element={authUser ? <UserProfile/> : <LoginPage/>}/>
+        <Route path="/edit-profile" element={authUser ? <EditProfile/> : <LoginPage/>}/>
+        <Route path="/admin/create-job" element={authUser ? <CreateJob/> : <LoginPage/>}/>
+        <Route path="/admin/dashboard" element={authUser ? <RecruiterDashboard/> : <LoginPage/>}/>
+        <Route path="/admin/applicants" element={authUser ? <Applicants/> : <LoginPage/>}/>
       </Routes>
     </div>
   )

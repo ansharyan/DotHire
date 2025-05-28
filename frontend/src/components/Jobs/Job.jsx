@@ -1,6 +1,8 @@
 import React from "react";
+import {Link} from "react-router-dom"
 
 export default function Job( job ) {
+  const role = "employer";
   return (
     <div className="">
       <a
@@ -47,8 +49,8 @@ export default function Job( job ) {
               </ul>
             </ul>
             <div className="flex justify-between items-center mt-4">
-              <div className="btn btn-ghost btn-accent font-bold -ml-4">Apply</div>
-              <div className={`badge badge-neutral`}>Not Applied</div>
+              {role === "employer" ? <div className="flex gap-2"> <div className="btn btn-accent">Edit</div> <Link to="/admin/applicants" className="btn btn-ghost btn-neutral">View Applicants</Link></div> : <div className="btn btn-ghost btn-accent font-bold -ml-4"> Apply</div>}
+              {role === "employer"? <div className="btn btn-error -ml-4">Delete</div> : <div className={`badge badge-neutral`}>Not Applied</div>}
             </div>
           </div>     
         </div>

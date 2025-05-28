@@ -3,9 +3,9 @@ import Job from './Job.jsx'
 import job from '../../utils/data/jobs.js'
 
 
-export default function Jobs() {
+export default function Jobs({className}) {
   return (
-    <div className='mt-10 grid md:grid-cols-2 xl:grid-cols-3 gap-4'>
+    <div className={'grid gap-4 ' + className}>
         <Job {...job}/>
         <Job {...job}/>
         <Job {...job}/>

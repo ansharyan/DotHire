@@ -7,7 +7,7 @@ export default function JobsPage() {
     <div className='flex flex-col md:grid md:grid-cols-4 mx-15 md:flex-row'>
         <Filter className=""/>
         <div className=' col-span-3'>
-          <Jobs />
+          <Jobs className={"md:grid-cols-2 xl:grid-cols-3 mt-10"} />
         </div>
     </div>
   )

@@ -38,7 +38,12 @@ export default function CreateJob() {
             </div>
             <div>
                 <label className='label text-primary'>Company</label>
-                <input type="text" className='input w-full' placeholder='Company Name' value={form.company} onChange={handleChange} name="company"/>
+                <select className='select w-full' value={form.company} onChange={handleChange} name="company">
+                    <option value="">Select Company</option>
+                    <option value="Google">Google</option>
+                    <option value="Microsoft">Microsoft</option>
+                    <option value="Company C">Company C</option>
+                </select>
             </div>
             <div>
                 <label className='label text-primary'>Location</label>

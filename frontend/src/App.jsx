@@ -7,6 +7,8 @@ import EditProfile from "./pages/EditProfile.jsx"
 import LoginPage from "./pages/Authentication/LoginPage.jsx"
 import SignUpPage from "./pages/Authentication/SignUpPage.jsx"
 import CreateJob from "./pages/Jobs/CreateJob.jsx"
+import RecruiterDashboard from "./pages/RecruiterDashboard.jsx"
+import Applicants from "./components/Applicants/Applicants.jsx"
 
 function App() {
 
@@ -20,7 +22,9 @@ function App() {
         <Route path="/jobs" element={<JobsPage/>} />
         <Route path="/profile" element={<UserProfile/>}/>
         <Route path="/edit-profile" element={<EditProfile/>}/>
-        <Route path="/create-job" element={<CreateJob/>}/>
+        <Route path="/admin/create-job" element={<CreateJob/>}/>
+        <Route path="/admin/dashboard" element={<RecruiterDashboard/>}/>
+        <Route path="/admin/applicants" element={<Applicants/>}/>
       </Routes>
     </div>
   )

@@ -1,8 +1,11 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import { Link, Navigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
+
+  const navigate = useNavigate();
+  const queryClient = useQueryClient();
   
   const {mutate, isPending, error, isError}  = useMutation({
     mutationKey: ["login"],
@@ -30,7 +33,8 @@ export default function LoginPage() {
     },
     onSuccess:(data) => {
       alert("Login successful!");
-      Navigate("/jobs");
+      queryClient.invalidateQueries(["authUser"]);
+      navigate("/jobs");
     }
   });
 

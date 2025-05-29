@@ -1,12 +1,14 @@
 import React from "react";
 import Logo from "./Logo.jsx";
 import { Link } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
 
   const [isOpen, setIsOpen] = React.useState(false);
   const queryClient = useQueryClient();
+
+  const {data: user} = queryClient.getQueryData(["authUser"]);
 
   const {mutate:logout,isPending, error, isError} = useMutation({
     mutationFn: async () => {
@@ -105,7 +107,7 @@ export default function Navbar() {
                   <span className="sr-only">Toggle dashboard menu</span>
 
                   <img
-                    src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?q=80&w=1770&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                    src={user?.profile.profilePhoto || "/avatar-placeholder.png"}
                     alt=""
                     className="size-10 object-cover "
                   />
@@ -117,7 +119,7 @@ export default function Navbar() {
                 >
                   <div className="p-2">
                     <Link
-                      to="#"
+                      to="/profile"
                       className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
                       role="menuitem"
                     >

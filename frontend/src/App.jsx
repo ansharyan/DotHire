@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar/>
+      {authUser && <Navbar authUser={authUser} />}
       <Routes>
         <Route path="/" element={<HomePage/>} />
         <Route path="/login" element={authUser ? <JobsPage/> : <LoginPage/> } />

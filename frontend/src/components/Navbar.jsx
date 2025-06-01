@@ -1,14 +1,14 @@
 import React from "react";
 import Logo from "./Logo.jsx";
 import { Link } from "react-router-dom";
-import { queryOptions, useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function Navbar() {
 
   const [isOpen, setIsOpen] = React.useState(false);
   const queryClient = useQueryClient();
 
-  const {data: user} = queryClient.getQueryData(["authUser"]);
+  const {user} = queryClient.getQueryData(["authUser"]) || {};
 
   const {mutate:logout,isPending, error, isError} = useMutation({
     mutationFn: async () => {
@@ -113,9 +113,9 @@ export default function Navbar() {
                   />
                 </button>
 
-                <div
+                {user && <div
                   className={`absolute end-0 z-10 mt-0.5 w-56 divide-y divide-gray-100 rounded-md border border-gray-100 bg-white shadow-lg ${isOpen? "block" : "hidden"}`}
-                  role="menu"
+                  role="menu" onClick={handleToggle}
                 >
                   <div className="p-2">
                     <Link
@@ -126,13 +126,15 @@ export default function Navbar() {
                       My profile
                     </Link>
 
-                    <Link
-                      to="#"
-                      className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
-                      role="menuitem"
-                    >
-                      Applications
-                    </Link>
+                    {user?.role === "employer" && (
+                      <Link
+                        to="/admin/create-job"
+                        className="block rounded-lg px-4 py-2 text-sm text-gray-500 hover:bg-gray-50 hover:text-gray-700"
+                        role="menuitem"
+                      >
+                        Create Job
+                      </Link>
+                    )}
                   </div>
 
                   <div className="p-2">
@@ -161,7 +163,7 @@ export default function Navbar() {
                       </button>
                     
                   </div>
-                </div>
+                </div>}
               </div>
 
             </div>

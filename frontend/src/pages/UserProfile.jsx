@@ -5,28 +5,29 @@ import { Link } from "react-router-dom";
 import { MdAttachment } from "react-icons/md";
 import Jobs from "../components/Jobs/Jobs";
 import Applications from "../components/Application/Applications";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 
 export default function UserProfile() {
-  const user = {
-    fullname: "Arjun Mehta",
-    email: "arjun@innovatech.com",
-    phoneNumber: "+1-212-555-0199",
-    password: "hashed_password_here", // hash this before saving
-    role: "employer",
-    company: {
-      name: "Innovatech Solutions",
-      website: "https://innovatech.com",
-      logo: "/logos/innovatech.png",
-      description:
-        "A global leader in AI and software innovation, delivering top-tier enterprise solutions.",
-      location: "New York, NY",
-    }, // match company _id above
-    profile: {
-      bio: "Tech recruiter with a passion for connecting top talent to top companies.",
-      resume: "",
-      profilePhoto: "/profiles/arjun.png",
+  
+  const queryClient = useQueryClient();
+  const {user} = queryClient.getQueryData(["authUser"]);
+
+  const {data:appliedJobs, isLoading, isError, error} = useQuery({
+    queryKey: ["appliedJobs", user?._id],
+    queryFn: async () => {
+      try {
+        const res = await fetch(`/api/application/getApplied/${user?._id}`);
+        const data = await res.json();
+        if (!res.ok) {
+          throw new Error(data.error || "Something went wrong!");
+        }
+        return data.applications;
+      } catch (error) {
+        throw new Error(error.message);
+      }
     },
-  };
+    retry: 1,
+  })
 
   return (
     <div className="flex flex-col w-2/3 mx-auto ">
@@ -34,10 +35,10 @@ export default function UserProfile() {
         <div className="flex justify-between">
           <div className="flex h-full items-center gap-4">
             <div className="rounded-full overflow-auto w-30 h-30">
-              <img src="logo.png"></img>
+              <img src={user.profile.profilePhoto || "avatar-placeholder.png"}></img>
             </div>
             <div className="flex flex-col">
-              <span>{user?.fullname}</span>
+              <span>{user?.fullname} <div className="badge badge-accent">{user?.role === "employer" ? "Recruiter" : "Job-Seeker"}</div></span>
               <span>{user?.profile?.bio}</span>
             </div>
           </div>
@@ -68,11 +69,14 @@ export default function UserProfile() {
         </div>
       </div>
 
-      <div className="mt-5 p-6">
+      {user?.role === "employee" && (
+        <div className="mt-5 p-6">
             <h2 className="text-accent font-medium text-lg">Applied Jobs</h2>
             <div className="bg-gray-700 h-0.5 rounded-full mt-0.5"></div>
-            <Applications/>
+            {isLoading && <div className="text-center mt-4">Loading...</div>}
+            {!isLoading && !isError && <Applications applications={appliedJobs} />}
       </div>
+      )}
     </div>
   );
 }

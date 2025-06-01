@@ -2,10 +2,10 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import React from 'react'
 
-export default function CreateJob() {
+export default function EditJob({job}) {
     const queryClient = useQueryClient();
     const {user} = queryClient.getQueryData(['authUser']) || {};
-    const navigation = useNavigate();
+    const navigate = useNavigate();
     if(user?.role !== 'employer'){
         return (
             <div className='text-center'><p className='text-error'>You are Not Authorized!</p> 
@@ -16,9 +16,8 @@ export default function CreateJob() {
 
     const{mutate, isPending, isError, error} = useMutation({
         mutationFn: async (form) => {
-            console.log(form)
-            const response = await fetch('/api/job/create', {
-                method: 'POST',
+            const response = await fetch(`/api/job/edit/${job._id}`, {
+                method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -32,25 +31,25 @@ export default function CreateJob() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['jobs']);
-            alert('Job created successfully!');
-            navigation('/jobs');
+            alert('Job updated successfully!');
+            navigate('/jobs');
         },
         onError: (error) => {
-            console.error('Error creating job:', error);
-            alert('Failed to create job: ' + error.message);
+            console.error('Error updating job:', error);
+            alert('Failed to update job: ' + error.message);
         },
     })
 
     const [form, setForm] = React.useState({
-        title: "",
-        description: "",
-        requirements: [],
-        experienceLevel: 0,
-        company: "",
-        location: "",
-        salary: "",
-        jobType: "", 
-        position: 0,
+        title: job?.title,
+        description: job?.description,
+        requirements: job?.requirements || [],
+        experienceLevel: job?.experienceLevel || 0,
+        company: job?.company.name || "",
+        location: job?.location || "",
+        salary: job?.salary || "",
+        jobType: job?.jobType || "", 
+        position: job?.position || 0,
     });
 
     const handleChange = (e) => {
@@ -63,9 +62,11 @@ export default function CreateJob() {
         if (isPending) return;
         mutate(form);
     }
+
+
   return (
-    <div className='w-2/3 mx-auto mt-5 border-2 border-base-300 rounded-box p-4 flex flex-col'>
-        <h1>Create Job</h1>
+    <div className='w-full mx-auto rounded-box p-4 flex flex-col'>
+        <h1 className='text-neutral text-lg'>Edit Job</h1>
         <div className='flex flex-col gap-3'>
             <label className='label text-primary'>Job Title</label>
             <input type="text" className='input w-full' placeholder='Job Title' value={form.title} onChange={handleChange} name="title" />
@@ -80,11 +81,11 @@ export default function CreateJob() {
         <div className=' grid grid-cols-3 gap-3 mt-4'>
             <div>
                 <label className='label text-primary'>Experience Level</label>
-                <input type="number" className='input w-full' placeholder='Experience Level in yrs+' value={form.experienceLevel} onChange={handleChange} name="experienceLevel" required min={0} max={5}/>
+                <input type="number" className='input w-full' placeholder='Experience Level in yrs+' value={form.experienceLevel} onChange={handleChange} name="experienceLevel"/>
             </div>
             <div>
                 <label className='label text-primary'>Company</label>
-                <select className='select w-full' value={form.company} onChange={handleChange} name="company">
+                <select className='select w-full' value={form.company} name="company">
                     <option value="">Select Company</option>
                     <option value="Google">Google</option>
                     <option value="Microsoft">Microsoft</option>
@@ -116,7 +117,7 @@ export default function CreateJob() {
                 <input type="number" className='input w-full' placeholder='Number of Positions' value={form.position} onChange={handleChange} name="position"/>
             </div>
         </div>
-        <div className='flex w-full flex-row-reverse mr-4'><div className='btn btn-accent mt-4 w-fit justify-self-end' onClick={handleSubmit}>{isPending ? (<div className="loading loading-dots"></div>) : "Create Job"}</div></div>
+        <div className='flex w-full flex-row-reverse mr-4'><div className='btn btn-accent mt-4 w-fit justify-self-end' onClick={handleSubmit}>{isPending ? (<div className="loading loading-dots"></div>) : "Edit Job"}</div></div>
     </div>
   )
 }

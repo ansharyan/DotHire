@@ -34,7 +34,10 @@ export default function LoginPage() {
       alert("Login successful!");
       queryClient.invalidateQueries(["authUser"]);
       navigate("/jobs");
-    }
+    },
+    onError: (error) => {
+      alert("Login failed: " + error.message);
+    },
   });
 
 
@@ -51,18 +54,15 @@ export default function LoginPage() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(isPending) return; // Prevent multiple submissions
     mutate(form);
-    if(isError){
-      console.error("Login failed:", error);
-      alert("Login failed: " + error.message);
-    }
   };
   return (
     <div>
       <div className="w-2/3 mx-auto">
         <fieldset className="fieldset bg-base-200 border-base-300 rounded-box w-full border p-4">
           <legend className="fieldset-legend text-neutral text-lg">
-            SignUp
+            Log In
           </legend>
 
           <label className="label text-primary">Email</label>
@@ -108,8 +108,8 @@ export default function LoginPage() {
           
         </fieldset>
         <div className="flex justify-center mt-4">
-          <button className="btn btn-accent w-full" onClick={handleSubmit}>
-            Log In
+          <button className="btn btn-accent w-full" onClick={handleSubmit}  >
+            {isPending ? "Logging in..." : "Log In"}
           </button>
         </div>
       </div>

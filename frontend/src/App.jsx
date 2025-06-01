@@ -39,7 +39,7 @@ function App() {
 
   return (
     <div className="flex flex-col min-h-screen">
-      {authUser && <Navbar authUser={authUser} />}
+      <Navbar />
       <Routes>
         <Route path="/" element={<HomePage/>} />
         <Route path="/login" element={authUser ? <JobsPage/> : <LoginPage/> } />
@@ -49,7 +49,7 @@ function App() {
         <Route path="/edit-profile" element={authUser ? <EditProfile/> : <LoginPage/>}/>
         <Route path="/admin/create-job" element={authUser ? <CreateJob/> : <LoginPage/>}/>
         <Route path="/admin/dashboard" element={authUser ? <RecruiterDashboard/> : <LoginPage/>}/>
-        <Route path="/admin/applicants" element={authUser ? <Applicants/> : <LoginPage/>}/>
+        <Route path="/admin/applicants/:jobId" element={authUser ? <Applicants/> : <LoginPage/>}/>
       </Routes>
     </div>
   )

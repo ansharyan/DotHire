@@ -2,13 +2,17 @@ import React from "react";
 import { Link } from "react-router-dom";
 import HandleApply from "../../utils/hooks/HandleApply";
 import { useQueryClient } from "@tanstack/react-query";
+import HandleDeleteJob from "../../utils/hooks/HandleDeleteJob";
+import EditJob from "../../pages/Jobs/EditJob";
 
 export default function Job({ job, role }) {
   const queryClient = useQueryClient();
 
   const { user } = queryClient.getQueryData(["authUser"]);
   role = user?.role || "employee"; // Fallback to passed role if user role is not available
+
   const { applyJob, isApplying } = HandleApply();
+  const {deleteJob, isDeleting} = HandleDeleteJob();
 
   let applied = false;
   let status = "Not Applied";
@@ -20,11 +24,30 @@ export default function Job({ job, role }) {
     }
   });
 
+  const statusClass = (status) => {
+    switch (status) {
+      case "accepted":
+        return "badge badge-success";
+      case "rejected":
+        return "badge badge-error";
+      default:
+        return "badge badge-neutral";
+    }
+  }
+
   const handleApply = (e) => {
     e.preventDefault();
     // Logic to handle job application
     applyJob({ jobId: job._id, applicantId: user._id });
   };
+
+  const handleDelete = (e) => {
+    e.preventDefault();
+    // Logic to handle job deletion
+    if(isDeleting) return; // Prevent multiple deletions
+    if (!window.confirm("Are you sure you want to delete this job?")) return;
+    deleteJob(job._id);
+  }
 
   return (
     <div className="">
@@ -59,14 +82,54 @@ export default function Job({ job, role }) {
             {job?.jobType}
           </span>
           <span className="rounded-full bg-primary/10 px-2.5 py-0.5 text-sm whitespace-nowrap text-primary">
-            {job?.salary / 10000} LPA{" "}
+            {job?.salary / 100000} LPA{" "}
           </span>
         </div>
 
         <div className="collapse mt-5">
           <input type="checkbox" className="peer" />
           <div className="btn btn-neutral collapse-title">Details</div>
-          <div className="collapse-content mt-3">
+          
+          {/* collapse-content */}
+          {role === "employee" && (
+            <div className="collapse-content mt-3">
+            <ul className="list-disc pl-5">
+              <li className="text-sm text-gray-700">
+                Location: {job?.location}
+              </li>
+              <li className="text-sm text-gray-700">
+                Experience Level: {job?.experienceLevel + "years+"}
+              </li>
+              <li className="text-sm text-gray-700">Requirements:</li>
+              <ul className="list-disc pl-5">
+                {job?.requirements.map((req, index) => (
+                  <li key={index} className="text-sm text-gray-700">
+                    {req}
+                  </li>
+                ))}
+              </ul>
+            </ul>
+            <div className="flex justify-between items-center mt-4">
+                <div
+                  className="btn btn-ghost btn-accent font-bold -ml-4"
+                  onClick={handleApply} disabled={applied || isApplying}
+                >
+                  {applied ? "Applied":isApplying ? (
+                    <span className="loading loading-spinner loading-sm"></span>
+                  ) : (
+                    "Apply"
+                  ) }
+                </div>
+              
+                <div className={statusClass(status)}>{status}</div>
+              
+            </div>
+          </div>
+          
+          )}
+
+           {role === "employer" && (
+            <div className="collapse-content mt-3">
             <ul className="list-disc pl-5">
               <li className="text-sm text-gray-700">
                 Location: {job?.location}
@@ -84,36 +147,30 @@ export default function Job({ job, role }) {
               </ul>
             </ul>
             <div className="flex justify-between items-center mt-4">
-              {role === "employer" ? (
+              
                 <div className="flex gap-2">
-                  {" "}
-                  <div className="btn btn-accent">Edit</div>{" "}
+                  {/* Open the modal using document.getElementById('ID').showModal() method */}
+                    <button className="btn btn-accent" onClick={()=>document.getElementById('my_modal_2').showModal()}>Edit</button>
+                    <dialog id="my_modal_2" className="modal">
+                      <div className="modal-box">
+                        <EditJob job={job}/>
+                      </div>
+                      <form method="dialog" className="modal-backdrop">
+                        <button>Close</button>
+                      </form>
+                    </dialog>
                   <Link
-                    to="/admin/applicants"
+                    to={`/admin/applicants/${job?._id}`}
                     className="btn btn-ghost btn-neutral"
                   >
                     View Applicants
                   </Link>
                 </div>
-              ) : (
-                <div
-                  className="btn btn-ghost btn-accent font-bold -ml-4"
-                  onClick={handleApply} disabled={applied || isApplying}
-                >
-                  {applied ? "Applied":isApplying ? (
-                    <span className="loading loading-spinner loading-sm"></span>
-                  ) : (
-                    "Apply"
-                  ) }
-                </div>
-              )}
-              {role === "employer" ? (
-                <div className="btn btn-error -ml-4">Delete</div>
-              ) : (
-                <div className={`badge badge-neutral`}>{status}</div>
-              )}
+              
+                <div className="btn btn-error -ml-4" onClick={handleDelete}>{isDeleting? (<div className="loading loading-dots"/>) : "Delete"}</div>             
             </div>
           </div>
+           )}
         </div>
 
         <dl className="mt-6 flex gap-4 lg:gap-6">

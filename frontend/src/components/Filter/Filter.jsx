@@ -1,7 +1,7 @@
 import React from "react";
 import FilterCollapse from "./FilterCollapse";
 
-export default function Filter() {
+export default function Filter({jobs,sendData}) {
 
 
   return (
@@ -15,10 +15,10 @@ export default function Filter() {
       <div className="collapse md:hidden">
         <input type="checkbox" />
         <div className="btn btn-accent w-full collapse-title">Filter Jobs</div>
-        <div className="collapse-content"><FilterCollapse/></div>
+        <div className="collapse-content"><FilterCollapse jobs={jobs}/></div>
       </div>
 
-      <div className="hidden md:block"><FilterCollapse/></div>
+      <div className="hidden md:block"><FilterCollapse jobs={jobs} sendData={sendData}/></div>
     </div>
   );
 }

@@ -1,8 +1,9 @@
 
 import React from 'react'
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 export default function HandleApply() {
+    const queryClient = useQueryClient();
     const {mutate:applyJob, isPending:isApplying, error, isError} = useMutation({
         mutationFn: async ({jobId, applicantId}) => {
             const response = await fetch(`/api/application/apply`, {
@@ -19,6 +20,7 @@ export default function HandleApply() {
             return data;
         },
         onSuccess: () =>{
+            queryClient.invalidateQueries({queryKey: ['jobs']});
             alert("Job Applied!");
         }
     })

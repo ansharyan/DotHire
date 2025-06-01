@@ -10,7 +10,7 @@ export default function HomePage() {
         </div>
         <div className='flex gap-4'>
             <button className='text-3xl btn btn-neutral p-6 font-bold' ><Link to="/jobs">Browse Jobs</Link></button>
-            <button className='text-3xl btn btn-accent p-6'>Post a Job</button>
+            <Link to={"/admin/create-job"} className='text-3xl btn btn-accent p-6'>Post a Job</Link>
         </div>
     </div>
   )

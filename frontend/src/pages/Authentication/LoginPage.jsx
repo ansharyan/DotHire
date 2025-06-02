@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
@@ -31,12 +32,12 @@ export default function LoginPage() {
       }
     },
     onSuccess:(data) => {
-      alert("Login successful!");
+      toast("Welcome Back!", {icon: "😊", duration: 2000});
       queryClient.invalidateQueries(["authUser"]);
       navigate("/jobs");
     },
     onError: (error) => {
-      alert("Login failed: " + error.message);
+      toast.error("Login failed: " + error.message);
     },
   });
 

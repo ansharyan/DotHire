@@ -2,6 +2,7 @@ import React from 'react'
 import { Link } from 'react-router-dom'
 import { IoEyeSharp } from "react-icons/io5";
 import {useMutation} from '@tanstack/react-query';
+import toast from 'react-hot-toast';
 
 export default function Applicant({applicant, application}) {
 
@@ -20,10 +21,10 @@ export default function Applicant({applicant, application}) {
       return response.json();
     },
     onSuccess: (data) => {
-      console.log("Application updated successfully:", data.message);
+      toast.success("Application updated successfully:", data.message);
     },
     onError: (error) => {
-      console.error("Error updating application:", error);
+      toast.error("Error updating application:", error);
     },
   })
 

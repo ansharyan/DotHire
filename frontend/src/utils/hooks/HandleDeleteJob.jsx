@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React from 'react'
+import toast from 'react-hot-toast';
 
 export default function HandleDeleteJob() {
 
@@ -17,11 +18,11 @@ export default function HandleDeleteJob() {
             return data;
         },
         onSuccess: (data) => {
-            alert(data.message || 'Job deleted successfully');
+            toast.success(data.message || 'Job deleted successfully');
             queryClient.invalidateQueries(['jobs']);
         },
         onError: (error) => {
-            alert('Failed to delete job: ' + error.message);
+            toast.error('Failed to delete job: ' + error.message);
         },
     })
   return (

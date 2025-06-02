@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { set } from "mongoose";
 import React from "react";
+import toast from "react-hot-toast";
 import { MdOutlineEdit } from "react-icons/md";
 import { useNavigate } from "react-router-dom";
 
@@ -45,11 +46,11 @@ export default function EditProfile() {
     },
     onSuccess: (data) => {
       queryClient.invalidateQueries(["authUser"]);
-      alert("Profile updated successfully!");
+      toast.success("Profile updated successfully!");
       navigate("/profile");
     },
     onError: (error) => {
-      alert(error.message);
+      toast.error(error.message);
     }
   })
 

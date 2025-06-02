@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import React from 'react'
+import { toast } from 'react-hot-toast';
 
 export default function CreateJob() {
     const queryClient = useQueryClient();
@@ -32,12 +33,11 @@ export default function CreateJob() {
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['jobs']);
-            alert('Job created successfully!');
+            toast.success('Job created successfully!');
             navigation('/jobs');
         },
         onError: (error) => {
-            console.error('Error creating job:', error);
-            alert('Failed to create job: ' + error.message);
+            toast.error('Failed to create job: ' + error.message);
         },
     })
 

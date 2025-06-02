@@ -1,6 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 
 export default function SignUpPage() {
 
@@ -27,10 +28,11 @@ export default function SignUpPage() {
       }
     },
     onSuccess: (data) => {
+      toast.success("Signup successful! Redirecting to login page...");
       navigate("/login");
     },
     onError: (error) => {
-      console.error("Signup failed:", error);
+      toast.error("Signup failed:", error);
     },
   })
 

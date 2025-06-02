@@ -1,6 +1,7 @@
 
 import React from 'react'
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import toast from 'react-hot-toast';
 
 export default function HandleApply() {
     const queryClient = useQueryClient();
@@ -21,8 +22,11 @@ export default function HandleApply() {
         },
         onSuccess: () =>{
             queryClient.invalidateQueries({queryKey: ['jobs']});
-            alert("Job Applied!");
-        }
+            toast.success("Job Applied!");
+        },
+        onError: (error) => {
+            toast.error(error.message || 'Failed to apply for the job');
+        },
     })
   return ({applyJob, isApplying, error, isError} )
 }

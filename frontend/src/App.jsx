@@ -10,6 +10,7 @@ import CreateJob from "./pages/Jobs/CreateJob.jsx"
 import RecruiterDashboard from "./pages/RecruiterDashboard.jsx"
 import Applicants from "./components/Applicants/Applicants.jsx"
 import { useQuery } from "@tanstack/react-query"
+import { Toaster } from "react-hot-toast"
 
 function App() {
 
@@ -51,6 +52,8 @@ function App() {
         <Route path="/admin/dashboard" element={authUser ? <RecruiterDashboard/> : <LoginPage/>}/>
         <Route path="/admin/applicants/:jobId" element={authUser ? <Applicants/> : <LoginPage/>}/>
       </Routes>
+      <Toaster position="bottom-center"
+         reverseOrder={false}/>
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import React from 'react'
+import toast from 'react-hot-toast';
 
 export default function EditJob({job}) {
     const queryClient = useQueryClient();
@@ -31,12 +32,11 @@ export default function EditJob({job}) {
         },
         onSuccess: () => {
             queryClient.invalidateQueries(['jobs']);
-            alert('Job updated successfully!');
+            toast.success('Job updated successfully!');
             navigate('/jobs');
         },
         onError: (error) => {
-            console.error('Error updating job:', error);
-            alert('Failed to update job: ' + error.message);
+            toast.error('Failed to update job: ' + error.message);
         },
     })
 

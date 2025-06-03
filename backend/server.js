@@ -53,10 +53,10 @@ if(process.env.NODE_ENV === "production"){
     })
 }
 
-app.get("/", (req, res) =>{
-    res.json("Welcome to Job Sphere");
+// app.get("/", (req, res) =>{
+//     res.json("Welcome to Job Sphere");
     
-})
+// })
 
 app.listen(PORT, () => {
     connectdb();

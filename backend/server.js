@@ -44,10 +44,6 @@ app.use("/api/job", jobRouter);
 app.use("/api/company", companyRouter);
 app.use("/api/application", applicationRouter);
 
-app.get("/", (req, res) =>{
-    res.json("Welcome to Job Sphere");
-    
-})
 
 if(process.env.NODE_ENV === "production"){
     app.use(express.static(path.join(__dirname, "/frontend/dist")));
@@ -56,6 +52,11 @@ if(process.env.NODE_ENV === "production"){
         res.sendFile(path.join(__dirname,"frontend", "dist", "index.html"));
     })
 }
+
+app.get("/", (req, res) =>{
+    res.json("Welcome to Job Sphere");
+    
+})
 
 app.listen(PORT, () => {
     connectdb();

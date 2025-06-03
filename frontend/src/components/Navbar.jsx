@@ -2,6 +2,7 @@ import React from "react";
 import Logo from "./Logo.jsx";
 import { Link } from "react-router-dom";
 import {  useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { toast } from "react-hot-toast";
 
 export default function Navbar() {
 
@@ -31,6 +32,7 @@ export default function Navbar() {
     },
     onSuccess: () =>{
       queryClient.invalidateQueries(["authUser"]);
+      toast.success("Logged out successfully!",{icon: "👋"});
     }
 
   })

@@ -5,6 +5,7 @@ export default function HomePage() {
   return (
     <div className='flex flex-col items-center justify-center my-auto gap-9'>
         <div className='flex flex-col items-center justify-center text-center space-y-4'>
+          <img src='logo.png' alt='DotHire Logo' className='w-48 h-48 mb-4 rounded-full -mt-4' />
             <h1 className='text-7xl text-neutral'>Welcome to DotHire</h1>
             <h2 className='text-5xl text-secondary'>Discover your next great oppurtunity.</h2>
         </div>
